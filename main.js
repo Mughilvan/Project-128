@@ -1,11 +1,13 @@
-blue_blob_song="";
-believer_song="";
-rightWrist_x = 0;
-rightWrist_y = 0;
-leftWrist_x = 0;
-leftWrist_y = 0;
-scoreLeftWrist=0;
-scoreRightWrist=0;
+Blue_Blob_Song="";
+Believer_Song="";
+rightWrist_x=0;
+rightWrist_y=0;
+leftWrist_x=0;
+leftWrist_y=0;
+scoreleftWrist=0;
+scorerightWrist=0;
+song_Blue_Blob="";
+song_believer="";
 
 function setup(){
     canvas = createCanvas(600,530);
@@ -16,27 +18,41 @@ function setup(){
     poseNet.on('pose',gotposes);
 }
 function preload(){
-    believer_song=loadSound("music2.mp3");
-   blue_blob_song=loadSound("music.mp3");
+    Peter_pan_song = loadSound("music2.mp3");
+    Harry_potter_theme_song = loadSound("music.mp3");
 }
 function draw(){
     image(video,0,0,600,530);
     fill("#00ff00");
     stroke("#ff0000");
-    song_name = blue_blob_song.isPlaying();
-    console.log(song_name);
+    song_Blue_Blob = song_Blue_Blob.isPlaying();
+    console.log(song_Blue_Blob);
+    song_believer = song_believer.isPlaying();
+    console.log(song_believer);
     if(scoreleftWrist > 0.2){
         circle(leftWrist_x,leftWrist_y,20);
-        blue_blob_song.stop();
-        if(song_name == false){
-            believer_song.play();
+        Harry_potter_theme_song.stop();
+        if(song_Peter_pan == false){
+            Peter_pan_song.play();
         }
         else{
-            console.log("Song Name: Believer");
+            console.log("Song Name: Blue Blob Song");
+            document.getElementById("song_id").innerHTML = "Song Name: Blue Blob Song";
+        }
+    }
+    if(scorerightWrist > 0.2){
+        circle(rightWrist_x,rightWrist_y,20);
+        Peter_pan_song.stop();
+        if(song_believer == false){
+            song_believer.play();
+        }
+        else{
+            console.log("Song Name: Believer Theme Song");
             document.getElementById("song_id").innerHTML = "Song Name: Believer Song";
         }
     }
 }
+
 function modelLoaded(){
     console.log("poseNet Is Initialized");
 }
@@ -45,6 +61,8 @@ function gotposes(results){
         console.log(results);
         scoreleftWrist = results[0].pose.keypoints[9].score;
         console.log(scoreleftWrist);
+        scorerightWrist = results[0].pose.keypoints[10].score;
+        console.log(scorerightWrist);
         leftWrist_x = results[0].pose.leftWrist.x;
         leftWrist_y = results[0].pose.leftWrist.y;
         console.log("leftWrist_x = "+leftWrist_x+" leftWrist_y = "+leftWrist_y);
